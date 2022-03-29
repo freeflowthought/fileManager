@@ -7,6 +7,7 @@ import os
 import time
 
 # ---------------------------- function field ------------------------------- #
+#tested few things not working properly.  first, it only saves one record in json file.  second: not handling the empty list of the searchResult.
 
 # ---------------------------- search File Function ------------------------------- #
 
