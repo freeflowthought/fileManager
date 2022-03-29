@@ -13,7 +13,18 @@ import time
 
 def searchFile():
     fnameInput = fileEntry.get()
+    if "." not in fnameInput:
+        messagebox.showinfo(
+            title="File name input Error", message="Please include suffix in your search and make sure the search is not empty")
+        fileEntry.delete(0, END)
+        return
     fpathInput = pathEntry.get()
+    if "\\" not in fpathInput:
+        messagebox.showinfo(
+            title="Path input error", message="Please contains the \ in your path input")
+        pathEntry.delete(0, END)
+        return
+
     searchResult = find_files(fnameInput, fpathInput)
     text.insert(END, f"{searchResult}")
 
@@ -35,7 +46,6 @@ def save():
             "recordDate": recordDate
         }
     }
-    # Todo:  add a check for regex
     if len(fnameInput) == 0 or len(fpathInput) == 0 or len(searchResult) == 0:
         messagebox.showinfo(
             title="Oops", message="Please make sure you haven't left any fields empty.")
@@ -68,7 +78,7 @@ def delete():
         os.remove("json/searchFiles.json")
     except FileNotFoundError:
         messagebox.showinfo(
-            title="Oops", message="The File hasn't been created yet, nothing to delete")
+            title="Oops", message="The File hasn't been created yet, you get nothing to delete")
 
 # ----------------------------Date Query Function------------------------------- #
 
