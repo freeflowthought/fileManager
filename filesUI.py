@@ -5,12 +5,36 @@ from utility import find_files
 from datetime import datetime
 import os
 import time
+from random import choice, randint, shuffle
 
 # ---------------------------- CONSTANTS ------------------------------- #
-#doing the initialization in here, can't declare inside the save function, if doing that, count would going back to 0 and not being able to save in Json
-count = 0
+
+
+# Next Action: fnameInput, fpathInput, and searchResult to be refactored as the global variables?
+
 
 # ---------------------------- function field ------------------------------- #
+
+# ---------------------------- Random String Generator------------------------------- #
+
+#Password Generator Project
+def generateRdstring():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+    Rdletters = [choice(letters) for _ in range(randint(8, 10))]
+    Rdsymbols = [choice(symbols) for _ in range(randint(2, 4))]
+    Rdnumbers = [choice(numbers) for _ in range(randint(2, 4))]
+
+    Rdlist = Rdletters + Rdsymbols + Rdnumbers
+    shuffle(Rdlist)
+
+    Rdstring = "".join(Rdlist)
+    return Rdstring
+
+
+
 
 # ---------------------------- search File Function ------------------------------- #
 
@@ -28,6 +52,13 @@ def searchFile():
             title="Path input error", message="Please contains the \ in your path input")
         pathEntry.delete(0, END)
         return
+    #deal with the empty input. the tkinter has inserted an empty space before.  very nasty. there might be a better solution to resolve this bug.
+    if len(text.get('1.0', END)) > 2:
+        messagebox.showinfo(
+            title="Result exists", message="Please clean your search result before an another search")
+        text.delete('1.0', END)
+        return
+
 
     searchResult = find_files(fnameInput, fpathInput)
     text.insert(END, f"{searchResult}")
@@ -36,11 +67,9 @@ def searchFile():
 # ---------------------------- Save Function------------------------------- #
 def save():
     # date time properties needs to use the json.dumps to transfer to the json format(serialize)
-
-    #use the count so that the data structure in Json would be different, otherwise it would lead a error of only one record can be saved
-    global count
-    #transfer to string format of count
-    count = str(count)
+    #this id needs to be as random as enough to serve as the identifier
+    id = generateRdstring()
+    
     fnameInput = fileEntry.get()
     fpathInput = pathEntry.get()
     searchResult = text.get('1.0', END)
@@ -48,7 +77,7 @@ def save():
 
 
     new_data = {
-         count: {
+         id: {
             "fname": fnameInput,
             "pathname":  fpathInput,
             "searchResult":  searchResult,
@@ -59,6 +88,8 @@ def save():
 
     if len(fnameInput) == 0 or len(fpathInput) == 0:
         messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
+    elif len(searchResult) < 3:
+        messagebox.showinfo(title="Oops", message="your result doesn't look right. go check the input again")
     else:
         try:
             with open("json/searchFiles.json", "r") as data_file:
@@ -78,10 +109,7 @@ def save():
              fileEntry.delete(0, END)
              pathEntry.delete(0, END)
              text.delete('1.0', END)
-    #transfer back to int and keep counting. so the identifier in Json would be different
-    count = int(count)
-    count = count+1 
-            
+    
 
             
 
