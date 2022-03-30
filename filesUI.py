@@ -6,8 +6,11 @@ from datetime import datetime
 import os
 import time
 
+# ---------------------------- CONSTANTS ------------------------------- #
+#doing the initialization in here, can't declare inside the save function, if doing that, count would going back to 0 and not being able to save in Json
+count = 0
+
 # ---------------------------- function field ------------------------------- #
-#tested few things not working properly.  first, it only saves one record in json file.  second: not handling the empty list of the searchResult.
 
 # ---------------------------- search File Function ------------------------------- #
 
@@ -33,45 +36,54 @@ def searchFile():
 # ---------------------------- Save Function------------------------------- #
 def save():
     # date time properties needs to use the json.dumps to transfer to the json format(serialize)
-    funcName = "find_files"
+
+    #use the count so that the data structure in Json would be different, otherwise it would lead a error of only one record can be saved
+    global count
+    #transfer to string format of count
+    count = str(count)
     fnameInput = fileEntry.get()
     fpathInput = pathEntry.get()
     searchResult = text.get('1.0', END)
     recordDate = json.dumps(datetime.now().strftime('%Y-%m-%d'))
 
+
     new_data = {
-        funcName: {
+         count: {
             "fname": fnameInput,
-            "pathname": fpathInput,
-            "searchResult": searchResult,
-            "recordDate": recordDate
+            "pathname":  fpathInput,
+            "searchResult":  searchResult,
+            "recordDate":  recordDate,
+        
         }
     }
-    if len(fnameInput) == 0 or len(fpathInput) == 0 or len(searchResult) == 0:
-        messagebox.showinfo(
-            title="Oops", message="Please make sure you haven't left any fields empty.")
+
+    if len(fnameInput) == 0 or len(fpathInput) == 0:
+        messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
     else:
         try:
             with open("json/searchFiles.json", "r") as data_file:
-                # Reading old data
+                #Reading old data
                 data = json.load(data_file)
         except FileNotFoundError:
             with open("json/searchFiles.json", "w") as data_file:
                 json.dump(new_data, data_file, indent=4)
         else:
-            # Updating old data with new data
+            #Updating old data with new data
             data.update(new_data)
 
             with open("json/searchFiles.json", "w") as data_file:
-                # Saving updated data
+                #Saving updated data
                 json.dump(data, data_file, indent=4)
         finally:
-            #make sure the program runs more smoothly
-            time.sleep(0.5)
-            fileEntry.delete(0, END)
-            pathEntry.delete(0, END)
-            text.delete('1.0', END)
+             fileEntry.delete(0, END)
+             pathEntry.delete(0, END)
+             text.delete('1.0', END)
+    #transfer back to int and keep counting. so the identifier in Json would be different
+    count = int(count)
+    count = count+1 
+            
 
+            
 
 # ----------------------------Delete File Funtion------------------------------- #
 def delete():
@@ -135,3 +147,8 @@ text.focus()
 text.grid(row=3, column=1)
 
 window.mainloop()
+
+
+
+
+
