@@ -9,61 +9,76 @@ import os
 
 # ---------------------------- function field ------------------------------- #
 
+# ---------------------------- Random String Generator------------------------------- #
+
+
+
+
+
+
+
+
+# ----------------------------Date Query Function------------------------------- #
 
 
 # ---------------------------- UI SETUP ------------------------------- #
 #Global Config
 
-class FindFilesWindow:
-    currentSearchResult: list[str]
-
-    def __init__(self, parent) -> None:
-        self.frame = tk.Frame(parent, padx=35, pady=35)
-        self.frame.pack(side="top")
-        # Create interface
-
+class FindFileUI:
+    def __init__(self):
+        self.window = tk.Tk()
+        self.window.title("findFiles Function")
+        self.window.config(padx=35, pady=35)
+        self.window.pack(side="top")
 
 
-            # Labels
-        self.fileLabel = tk.Label(self.frame, text="File:")
+
+        # Labels
+        self.fileLabel = tk.Label(self.window, text="File:")
         self.fileLabel.grid(row=1, column=0)
-        self.pathLabel = tk.Label(self.frame, text="Path:")
+        self.pathLabel = tk.Label(self.window, text="Path:")
         self.pathLabel.grid(row=2, column=0)
-        self.textLabel = tk.Label(self.frame, text="Result:")
+        self.textLabel = tk.Label(self.window, text="Result:")
         self.textLabel.grid(row=3, column=0)
 
         # Entries
         # fileEntry
-        self.fileEntry = tk.Entry(self.frame, width=40)
+        self.fileEntry = tk.Entry(width=40)
         self.fileEntry.grid(row=1, column=1)
         self.fileEntry.focus()
         # path Entry
-        self.pathEntry = tk.Entry(self.frame, width=40)
+        self.pathEntry = tk.Entry(width=40)
         self.pathEntry.grid(row=2, column=1)
         self.pathEntry.focus()
 
 
         # Buttons
-        self.search_button = tk.Button(self.frame, text="Search", width=9, command=self.searchFile)
+        self.search_button = tk.Button(text="Search", width=9, command=self.searchFile)
         #the first parameter for padx is left, the second parameter for pady is the right
         self.search_button.grid(row=2, column=2,padx=(3,0))
 
         #the tuple for pady, the first parameter for top, second parameter for buttom
-        self.add_button = tk.Button(self.frame, text="Save", width=30, command=self.save)
+        self.add_button = tk.Button(text="Save", width=30, command=self.save)
         self.add_button.grid(row=4, column=1,pady=(5,5))
 
-        self.delete_button = tk.Button(self.frame, text="Delete", width=30, command=self.delete)
+        self.delete_button = tk.Button(text="Delete", width=30, command=self.delete)
         self.delete_button.grid(row=5, column=1,pady=(0,5))
 
         # Todo This jumps to a new UI window to execute the Query function, there would be some command for switching the UI
-        self.query_button = tk.Button(self.frame, text="Date Query", width=30)
+        self.query_button = tk.Button(text="Date Query", width=30)
         self.query_button.grid(row=6, column=1)
 
 
-         # Text
-        self.currentSearchResult = None
-        self.text = tk.Text(self.frame, height=5, width=30)
+        # Text
+        self.text = tk.Text(height=5, width=30)
+        # Puts cursor in textbox.
+        self.text.focus()
         self.text.grid(row=3, column=1)
+        self.window.mainloop()
+
+    # ---------------------------- search File Function ------------------------------- #
+
+
 
 
     def searchFile(self):
@@ -87,8 +102,11 @@ class FindFilesWindow:
                 return
 
 
-        self.searchResult = find_files(fnameInput, fpathInput)
-        self.text.insert(tk.END, self.searchResult)
+        searchResult = find_files(fnameInput, fpathInput)
+        self.text.insert(tk.END, f"{searchResult}")
+
+   # ---------------------------- Save Function------------------------------- #
+
 
     def save(self):
         #do the reading and writing at the same time and appending at the end of the line without truncating it.
@@ -113,7 +131,7 @@ class FindFilesWindow:
                     "pathname":  self.pathEntry.get(),
                     "searchResult":  self.text.get('1.0', tk.END),
                 }
-        json.dump(data, data_file, indent=4)
+            json.dump(data, data_file, indent=4)
         self.fileEntry.delete(0, tk.END)
         self.pathEntry.delete(0, tk.END)
         self.text.delete('1.0', tk.END)
@@ -133,26 +151,6 @@ class MainWindow:
         self.frame = tk.Frame(parent)
          #what does this line mean?
         self.frame.pack(fill="both")
-        self.childWindow = []
-        self.childInstance = []
-
-
-        #create a findFileButton
-        self.findFileaButton = tk.Button(self.frame,text='FindFiles',command=self.makeCommandWindow)
-        self.findFileaButton.pack(fill="both")
-
-    def makeCommandWindow(self) -> tk.Toplevel:
-            #this command returns a child window of a parent window, what toplevel does is to create a new window
-            newWindow = tk.Toplevel(self.parent)
-            self.childWindow.append(newWindow)
-            return newWindow
-    
-    def makeFindFiles(self) -> None:
-        newParent = self.makeCommandWindow()
-        newParent.title("FindFiles Function")
-        self.childInstance.append(FindFilesWindow(newParent))
-
-
 
 if __name__ == "__main__":
     root = tk.Tk()
