@@ -189,7 +189,7 @@ def _getFileAndSize(path: str) -> dict[str, int]:
     return outDict
 
 
-def copyUnzip(fromSource, toDestination):
+def copyUnzip(fromSource:str, toDestination:str) -> None:
     # this function copy from the source folder and paste it to the destination folder and unzip
 
     # 1: copy and paste logic
@@ -202,7 +202,7 @@ def copyUnzip(fromSource, toDestination):
     _unzip(dest)
 
 
-def _copy(src, dest):
+def _copy(src:str, dest:str) -> None:
     # fromsource must be the file not the directory
     if not os.path.isfile(src):
         print("you need to enter the valid file path")
@@ -213,7 +213,7 @@ def _copy(src, dest):
     shutil.copy2(src, dest)
 
 
-def _unzip(dest):
+def _unzip(dest:str) -> None:
     # separate the fromSource filename and form the toDestination filename
     fileName = os.path.dirname(dest)
     shutil.unpack_archive(dest, fileName)
@@ -241,3 +241,38 @@ def recentUpfiles(path):
                 filePath = os.path.join(os.path.abspath(root), file)
                 outFile.extend(filePath)
     return outFile
+
+
+def collectSize(path):
+#This function collectSize of the file under the certain directory
+    pass
+
+
+
+def collectByType(path):
+    #This function collectSize of the file under the certain directory by type
+    pass
+
+
+def fileDiff(srcFile, desFile):
+    #This function returns the difference of the content of the 2 files
+    pass
+
+
+def sizeChange(data,path):
+     #This function returns the size of the file change since last time it's being saved
+     pass
+
+
+def countPathFolders(path):
+    #count how many folders under certain path
+    pass
+
+def countPathFiles(path):
+    #count how many files under certain path
+    pass
+
+
+def countPathType(path):
+    #count how many files for certain types of the files under certain path
+    pass

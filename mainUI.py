@@ -5,6 +5,7 @@ import os
 
 from FindFiles import FindFilesWindow
 from GetSize import GetSize
+from unzip import UnzipCopy
 # ---------------------------- function field ------------------------------- #
 
 # ---------------------------- search File Function ------------------------------- #
@@ -44,15 +45,19 @@ class MainWindow:
         #what does this line mean in here
         self.findFilesButton.pack(fill="both")
 
-        # Create buttons, #make findFilesButton to be the frame of the FindFilesWindow Class
+        # Create buttons, #make getSizeButton to be the frame of the GetSize Class
         self.getSizeButton = tk.Button(
             self.frame,
-            text='get Size',
+            text='get Size', pady=20,
             command=self.makeGetSize)
         #what does this line mean in here
         self.getSizeButton.pack(fill="both")
 
 
+        self.unzipButton = tk.Button(self.frame, text="unzip function",command=self.makeUnzip)
+        self.unzipButton.pack(fill="both")
+
+    #Refactor: makeCommandWindow, makeFindFiles, and makeUnzip are pretty much the same thing. but passed in different class name
     def makeCommandWindow(self) -> tk.Toplevel:
         #this command returns a child window of a parent window, what toplevel does is to create a new window
         newWindow = tk.Toplevel(self.parent)
@@ -69,6 +74,11 @@ class MainWindow:
          newParent = self.makeCommandWindow()
          newParent.title("Get Size Function")
          self.childCommandInstances.append(GetSize(newParent))
+
+    def makeUnzip(self) -> None:
+        newParent = self.makeCommandWindow()
+        newParent.title("copyUnzip function")
+        self.childCommandInstances.append(UnzipCopy(newParent))
 
 
 if __name__ == "__main__":
