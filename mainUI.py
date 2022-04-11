@@ -2,7 +2,7 @@ import tkinter as tk
 import json
 from tkinter import messagebox
 import os
-
+from spawnUI import SpawnsChildWindows
 from FindFiles import FindFilesWindow
 from GetSize import GetSize
 from unzip import UnzipCopy
@@ -19,16 +19,12 @@ from unzip import UnzipCopy
 # ---------------------------- Main Window Function ------------------------------- #
 
 #create the makeCommandWindow function like MainWindow did for the rest of the class
-class MainWindow:
+class MainWindow(SpawnsChildWindows):
     def __init__(self, parent) -> None:
         #The parent is the root=tk.TK()
-        self.parent = parent
-        # the childWindows is empty UI interface of the window.
-
-        self.childWindows = []
+        super().__init__(parent)
          
-        #childCommandInstances are the instantiation of the small widget and functions inside the childWindows
-        self.childCommandInstances = []
+       
         
         # Create a root object for the rest of the items
         #make MaiWindow to be the parent of the FindFields Window and the rest of the windows which need to be created
@@ -57,28 +53,19 @@ class MainWindow:
         self.unzipButton = tk.Button(self.frame, text="unzip function",command=self.makeUnzip)
         self.unzipButton.pack(fill="both")
 
-    #Refactor: makeCommandWindow, makeFindFiles, and makeUnzip are pretty much the same thing. but passed in different class name
-    def makeCommandWindow(self) -> tk.Toplevel:
-        #this command returns a child window of a parent window, what toplevel does is to create a new window
-        newWindow = tk.Toplevel(self.parent)
-        self.childWindows.append(newWindow)
-        return newWindow
 
     def makeFindFiles(self) -> None:
         #this command makes the the FindFilesWindow UI attached to the topLevel
-        newParent = self.makeCommandWindow()
-        newParent.title("FindFiles Function")
-        self.childCommandInstances.append(FindFilesWindow(newParent))
+        #it was being inherited by spawnUI class
+         self.initializeCommandWindow("FindFile Function", FindFilesWindow)
 
     def makeGetSize(self) -> None:
-         newParent = self.makeCommandWindow()
-         newParent.title("Get Size Function")
-         self.childCommandInstances.append(GetSize(newParent))
+         
+         self.initializeCommandWindow("GetSize Function",GetSize)
 
     def makeUnzip(self) -> None:
-        newParent = self.makeCommandWindow()
-        newParent.title("copyUnzip function")
-        self.childCommandInstances.append(UnzipCopy(newParent))
+    
+        self.initializeCommandWindow("UnzipCopy Function",UnzipCopy)
 
 
 if __name__ == "__main__":

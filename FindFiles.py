@@ -4,6 +4,8 @@ import json
 from utility import find_files
 from datetime import datetime, timezone
 import os
+from spawnUI import SpawnsChildWindows
+
 
 
 
@@ -37,16 +39,13 @@ def saveToJson(fname: str, pathname: str, searchResult: list[str]) -> None:
 
 
 
-class FindFilesWindow:
+class FindFilesWindow(SpawnsChildWindows):
     currentSearchResult: list[str]
 
     def __init__(self, parent) -> None:
         # the childWindows is empty UI interface of the window.
-        self.parent = parent
-        self.childWindows = []
+        super().__init__(parent)
          
-        #childCommandInstances are the instantiation of the small widget and functions inside the childWindows
-        self.childCommandInstances = []
         self.frame = tk.Frame(parent, padx=35, pady=35)
         self.frame.pack(side="top")
         # Create interface
@@ -125,17 +124,9 @@ class FindFilesWindow:
             messagebox.showinfo(
             title="Oops", message="The File hasn't been created yet, nothing to delete")
 
-    def makeCommandWindow(self) -> tk.Toplevel:
-        #this command returns a child window of a parent window, what toplevel does is to create a new window
-        #this line of the code has the problem
-        newWindow = tk.Toplevel(self.parent)
-        self.childWindows.append(newWindow)
-        return newWindow
 
     def makeQuery(self) -> None:
-        newParent = self.makeCommandWindow()
-        newParent.title("Query Result")
-        self.childCommandInstances.append(QueryWindow(newParent))
+        self.initializeCommandWindow("DateQuery Function",QueryWindow)
 
 
 
