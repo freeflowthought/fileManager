@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from utility import copyUnzip,_copy,_unzip
+from Decoration import on_enter,on_leave
 
 
 class UnzipCopy:
@@ -26,6 +27,9 @@ class UnzipCopy:
 
         #button entry -- waiting to add the unzip method here
         self.unzipButton = tk.Button(self.frame,text="Unzip", width=9,command=self.unzip)
+        self.unzipButton.bind("<Enter>", on_enter)
+        self.unzipButton.bind("<Leave>", on_leave)
+
         self.unzipButton.grid(row=3,column=1,columnspan=2)
 
     def unzip(self) -> None:

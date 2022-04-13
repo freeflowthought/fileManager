@@ -1,4 +1,5 @@
 import tkinter as tk
+from Decoration import on_enter,on_leave
 
 
 
@@ -13,6 +14,7 @@ class SpawnsChildWindows:
         self.childWindows = []
          #childCommandInstances are the instantiation of the small widget and functions inside the childWindows
         self.childCommandInstances = []
+        self.frame = tk.Frame(parent)
 
     def makeCommandWindow(self) -> tk.Toplevel:
         newWindow = tk.Toplevel(self.parent)
@@ -23,3 +25,5 @@ class SpawnsChildWindows:
         newParent = self.makeCommandWindow()
         newParent.title(title)
         self.childCommandInstances.append(commandClass(newParent))
+
+

@@ -6,6 +6,7 @@ from spawnUI import SpawnsChildWindows
 from FindFiles import FindFilesWindow
 from GetSize import GetSize
 from unzip import UnzipCopy
+from Decoration import on_enter,on_leave
 # ---------------------------- function field ------------------------------- #
 
 # ---------------------------- search File Function ------------------------------- #
@@ -34,23 +35,32 @@ class MainWindow(SpawnsChildWindows):
         self.frame.pack(fill="both")
 
         # Create buttons, #make findFilesButton to be the frame of the FindFilesWindow Class
+        '''To be refactored for the code reuse'''
         self.findFilesButton = tk.Button(
             self.frame,
             text='Find Files',
             command=self.makeFindFiles)
+        self.findFilesButton.bind("<Enter>", on_enter)
+        self.findFilesButton.bind("<Leave>", on_leave)
         #what does this line mean in here
         self.findFilesButton.pack(fill="both")
+       
+        
 
         # Create buttons, #make getSizeButton to be the frame of the GetSize Class
         self.getSizeButton = tk.Button(
             self.frame,
             text='get Size', pady=20,
             command=self.makeGetSize)
+        self.getSizeButton.bind("<Enter>", on_enter)
+        self.getSizeButton.bind("<Leave>", on_leave)
         #what does this line mean in here
         self.getSizeButton.pack(fill="both")
 
 
         self.unzipButton = tk.Button(self.frame, text="unzip function",command=self.makeUnzip)
+        self.unzipButton.bind("<Enter>", on_enter)
+        self.unzipButton.bind("<Leave>", on_leave)
         self.unzipButton.pack(fill="both")
 
 

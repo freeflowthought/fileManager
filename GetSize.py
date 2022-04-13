@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from utility import getSize
+from Decoration import on_enter,on_leave
 
 class GetSize:
     def __init__(self,parent) -> None:
