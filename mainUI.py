@@ -9,12 +9,15 @@ from unzip import UnzipCopy
 from Decoration import on_enter,on_leave
 # ---------------------------- function field ------------------------------- #
 
-# ---------------------------- search File Function ------------------------------- #
+# ---------------------------- Reusuable logic ------------------------------- #
+def makeDefaultButton(parent,text,command):
+    button = tk.Button(parent,text=text,command=command)
+    button.bind("<Enter>", on_enter)
+    button.bind("<Leave>", on_leave)
+    button.pack(fill="both")
+    return button
 
 
-
-
-# ----------------------------Date Query Function------------------------------- #
 
 
 # ---------------------------- Main Window Function ------------------------------- #
@@ -31,38 +34,19 @@ class MainWindow(SpawnsChildWindows):
         #make MaiWindow to be the parent of the FindFields Window and the rest of the windows which need to be created
         self.frame = tk.Frame(parent)
 
-        #what does this line mean?
         self.frame.pack(fill="both")
 
         # Create buttons, #make findFilesButton to be the frame of the FindFilesWindow Class
         '''To be refactored for the code reuse'''
-        self.findFilesButton = tk.Button(
-            self.frame,
-            text='Find Files',
-            command=self.makeFindFiles)
-        self.findFilesButton.bind("<Enter>", on_enter)
-        self.findFilesButton.bind("<Leave>", on_leave)
-        #what does this line mean in here
-        self.findFilesButton.pack(fill="both")
+        self.findFilesButton = makeDefaultButton(self.frame,"Find Files", command=self.makeFindFiles)
        
         
 
         # Create buttons, #make getSizeButton to be the frame of the GetSize Class
-        self.getSizeButton = tk.Button(
-            self.frame,
-            text='get Size', pady=20,
-            command=self.makeGetSize)
-        self.getSizeButton.bind("<Enter>", on_enter)
-        self.getSizeButton.bind("<Leave>", on_leave)
-        #what does this line mean in here
-        self.getSizeButton.pack(fill="both")
+        self.getSizeButton = makeDefaultButton(self.frame, "Get Size", command=self.makeGetSize)
 
-
-        self.unzipButton = tk.Button(self.frame, text="unzip function",command=self.makeUnzip)
-        self.unzipButton.bind("<Enter>", on_enter)
-        self.unzipButton.bind("<Leave>", on_leave)
-        self.unzipButton.pack(fill="both")
-
+        #create an Unzip button
+        self.unzipButton = makeDefaultButton(self.frame, "Unzip Copy", command=self.makeUnzip)
 
     def makeFindFiles(self) -> None:
         #this command makes the the FindFilesWindow UI attached to the topLevel

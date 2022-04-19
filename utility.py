@@ -63,6 +63,8 @@ def fuzzySearchFile(pattern, search_path):
         result.extend(fnmatch.filter(files, f"*{pattern}*"))
     return result
 
+    
+
 
 def fuzzySearchFile2(pattern, search_path):
     # this function just need to input the fuzzy file name under the specific directory and returns the path which contains the fuzzyNam
