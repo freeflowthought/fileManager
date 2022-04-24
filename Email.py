@@ -19,14 +19,15 @@ class Email:
         self.toEmail = toEmail
         self.attachments = []
 
-    '''this method load the attachment into the self.attachments properties'''
     def loadAttachments(self, fileType:str, filePath:str) ->list[str]:
+        """this method load the attachment into the self.attachments properties"""
         allFiles = findFileByType(fileType,filePath)
         self.attachments = [file for file in allFiles]
+        return self.attachments
 
-
-    def sendEmail(self,fileType:str,filePath:str):
-        attachments = self.loadAttachments(fileType='.pdf',filePath='.')
+    #create the email file
+    def createEmail(self,fileType:str,filePath:str):
+        attachments = self.loadAttachments(fileType,filePath)
         msg = MIMEMultipart()
         msg['From'] = self.srcEmail
         msg['To'] = self.toEmail
@@ -34,9 +35,19 @@ class Email:
         for attachment in attachments:
             with open(attachment,"rb") as file:
                 attach = MIMEApplication(file.read(),_subtype=fileType)
-            '''add the header'''
+            #add the header
             attach.add_header('Content-Disposition','attachment',filename=str(attachment))
-        msg.attach(attach)
+            msg.attach(attach)
+
+
+    #1: use IMAP with Outlook
+
+    #2: use email service   
+
+
+
+
+    
 
 
 
